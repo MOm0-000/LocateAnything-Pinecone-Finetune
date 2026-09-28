@@ -1,0 +1,49 @@
+diff --git a/Embodied/eaglevl/model/locany/modeling_locateanything.py b/Embodied/eaglevl/model/locany/modeling_locateanything.py
+index 765f0cd..f15b469 100644
+--- a/Embodied/eaglevl/model/locany/modeling_locateanything.py
++++ b/Embodied/eaglevl/model/locany/modeling_locateanything.py
+@@ -92,7 +92,6 @@ class LocateAnythingForConditionalGeneration(LocateAnythingPreTrainedModel, Gene
+             self.vision_model = vision_model
+         else:
+             if config.vision_config.model_type == 'moonvit':
+-                config.vision_config._attn_implementation = 'flash_attention_2'
+                 self.vision_model = MoonVitPretrainedModel(config.vision_config)
+             else:
+                 raise ValueError(f'Unsupported vision model type: {config.vision_config.model_type}. Only moonvit is supported.')
+diff --git a/Embodied/eaglevl/train/locany_finetune_magi_stream.py b/Embodied/eaglevl/train/locany_finetune_magi_stream.py
+index 077c5b8..28b0787 100644
+--- a/Embodied/eaglevl/train/locany_finetune_magi_stream.py
++++ b/Embodied/eaglevl/train/locany_finetune_magi_stream.py
+@@ -1252,7 +1252,7 @@ def build_stream_packed_dataset_mtp(
+ 
+ def main():
+     launcher = os.environ.get('LAUNCHER', 'slurm')
+-    init_dist(launcher=launcher, backend='nccl')
++    init_dist(launcher=launcher, backend=os.environ.get('DIST_BACKEND', 'nccl'))
+     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
+     
+     if len(sys.argv) == 2 and sys.argv[1].endswith('.json'):
+@@ -1334,9 +1334,12 @@ def main():
+         config._attn_implementation_autoset = False
+         config.text_config._attn_implementation = model_args.attn_implementation
+         config.text_config._attn_implementation_autoset = False
+-        config.vision_config._attn_implementation = 'flash_attention_2'
++        config.vision_config._attn_implementation = model_args.attn_implementation
+         config.vision_config._attn_implementation_autoset = False
+-        logger.info(f'Text attn: {model_args.attn_implementation}, Vision attn: flash_attention_2')
++        logger.info(
++            f'Text attn: {model_args.attn_implementation}, '
++            f'Vision attn: {model_args.attn_implementation}'
++        )
+ 
+         config.image_token_index = image_token_index
+         config.text_config.block_size = int(model_args.block_size)
+@@ -1379,7 +1382,7 @@ def main():
+ 
+         if vision_config.model_type == 'moonvit':
+             logger.info('Loading MoonVit...')
+-            vision_config._attn_implementation = 'flash_attention_2'
++            vision_config._attn_implementation = model_args.attn_implementation
+             vision_model = MoonVitPretrainedModel.from_pretrained(
+                 model_args.vision_path, torch_dtype=torch.bfloat16, config=vision_config)
+         else:

@@ -1,0 +1,8 @@
+{
+  "pinecone_train": {
+    "annotation": "/absolute/path/to/dataset_true/annotations/pinecone_train.jsonl",
+    "root": "/absolute/path/to/dataset_true/images/",
+    "repeat_time": 1.0,
+    "data_augment": false
+  }
+}

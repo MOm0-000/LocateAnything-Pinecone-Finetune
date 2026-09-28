@@ -1,0 +1,83 @@
+{
+  "task": "single-class pinecone grounding",
+  "base_model": "NVlabs/LocateAnything-3B",
+  "dataset": {
+    "train_images": 558,
+    "train_positive_images": 311,
+    "train_negative_images": 247,
+    "train_boxes": 934,
+    "validation_images": 201,
+    "validation_positive_images": 101,
+    "validation_negative_images": 100,
+    "validation_boxes": 311,
+    "image_size": [1600, 900]
+  },
+  "training": {
+    "method": "LLM-only LoRA",
+    "lora_rank": 32,
+    "steps": 558,
+    "learning_rate": 0.00002,
+    "precision": "bf16",
+    "attention": "sdpa",
+    "max_sequence_length": 3072,
+    "trainable_parameters": 59867136,
+    "train_loss": 1.1611645404576665,
+    "runtime_seconds": 1610.4872,
+    "seed": 42
+  },
+  "validation_eval_201": {
+    "generation_mode": "slow",
+    "transformers_bf16": {
+      "base": {
+        "predicted_boxes": 249,
+        "precision_iou_025": 0.3735,
+        "recall_iou_025": 0.299,
+        "f1_iou_025": 0.3321,
+        "precision_iou_05": 0.2329,
+        "recall_iou_05": 0.1865,
+        "f1_iou_05": 0.2071
+      },
+      "finetuned": {
+        "predicted_boxes": 189,
+        "precision_iou_025": 0.746,
+        "recall_iou_025": 0.4534,
+        "f1_iou_025": 0.564,
+        "precision_iou_05": 0.5397,
+        "recall_iou_05": 0.328,
+        "f1_iou_05": 0.408
+      }
+    },
+    "llama_cpp_q4_k_m": {
+      "base": {
+        "predicted_boxes": 266,
+        "precision_iou_025": 0.312,
+        "recall_iou_025": 0.2669,
+        "f1_iou_025": 0.2877,
+        "precision_iou_05": 0.1992,
+        "recall_iou_05": 0.1704,
+        "f1_iou_05": 0.1837
+      },
+      "finetuned": {
+        "predicted_boxes": 228,
+        "precision_iou_025": 0.6535,
+        "recall_iou_025": 0.4791,
+        "f1_iou_025": 0.5529,
+        "precision_iou_05": 0.4825,
+        "recall_iou_05": 0.3537,
+        "f1_iou_05": 0.4082
+      }
+    }
+  },
+  "artifacts": {
+    "q4_k_m": {
+      "name": "LocateAnything-Pinecone-Second-Q4_K_M.gguf",
+      "bytes": 1931163456,
+      "sha256": "c3bdf537f24a8e51aa3297ae786781b44a452a6b919372eb2e6e1466fb4e2449"
+    },
+    "mmproj_bf16": {
+      "name": "mmproj-LocateAnything-Pinecone-Second-BF16.gguf",
+      "bytes": 872665024,
+      "sha256": "4c0dcfeb20b72d4b3ca12b6e37a1d0b4fe8a19e6727faaa7d41705d5030e5cc5"
+    }
+  }
+}

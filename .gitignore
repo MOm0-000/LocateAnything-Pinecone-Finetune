@@ -1,0 +1,31 @@
+# Model weights and training artifacts
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth
+checkpoints/
+outputs/
+work_dirs/
+
+# Datasets and archives
+data/
+dataset*/
+*.zip
+*.rar
+*.7z
+
+# Runtime builds and local environments
+runtime/
+build/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Logs and editor files
+*.log
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
