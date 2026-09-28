@@ -1,6 +1,6 @@
 # LocateAnything Pinecone Fine-tuning
 
-用于将 [NVlabs/Eagle](https://github.com/NVlabs/Eagle) 中的 LocateAnything-3B 微调为单类别松果定位模型，并将合并后的模型转换为 GGUF，部署到 Jetson Orin Nano 8GB。
+本项目用于将 [NVlabs/Eagle](https://github.com/NVlabs/Eagle) 中的 LocateAnything-3B 微调为单类别松果定位模型，并将合并后的模型转换为 GGUF，部署到 Jetson Orin Nano 8GB。
 
 > 这是社区复现实验，不是 NVIDIA 官方仓库。数据集和模型权重不包含在本仓库中。
 
